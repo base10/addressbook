@@ -6,3 +6,62 @@
 @import "neat";
 @import "base/base";
 @import "refills/flashes";
+
+body {
+  background-color: #f7f8f8
+}
+
+main {
+  @include outer-container;
+}
+
+.container {
+  @include align-items(center);
+  @include display(flex);
+  @include justify-content(space-between);
+  margin: 0 auto;
+  max-width: $max-width;
+}
+
+.top-bar {
+  background-color: #fff;
+  border-bottom: $base-border;
+  box-shadow: $base-box-shadow;
+  margin-bottom: 2em;
+  padding: 2em inherit;
+
+  button {
+    float: right;
+  }
+}
+
+.contacts {
+  @include span-columns(2);
+
+  a {
+    display: inline-block;
+    padding: 0.5em;
+
+    &.active {
+      border-radius: $base-border-radius;
+      color: $base-font-color;
+      font-weight: 800;
+    }
+  }
+}
+
+.contact-show {
+  @include omega;
+  @include span-columns(10);
+  background-color: #fff;
+  border-radius: $base-border-radius;
+  border: $base-border;
+  box-shadow: $base-box-shadow;
+  padding: 2em;
+
+  h2 {
+    border-bottom: $base-border;
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+  }
+}
