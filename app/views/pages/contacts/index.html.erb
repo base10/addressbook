@@ -7,37 +7,22 @@
 
 <main>
   <ol class="contacts">
-    <li>
-      <a href="#" class="active">Contact 1</a>
-    </li>
-    <li>
-      <a href="#">Contact 2</a>
-    </li>
-    <li>
-      <a href="#">Contact 3</a>
-    </li>
-    <li>
-      <a href="#">Contact 4</a>
-    </li>
-    <li>
-      <a href="#">Contact 5</a>
-    </li>
   </ol>
 
   <section class="contact-show">
-    <h2>Contact 1</h2>
-    <form>
+    <h2 data-role="contact-header">Contact</h2>
+    <form id="contact_form">
       <label>Full Name</label>
-      <input type="text">
+      <input type="text" data-role="name">
 
       <label>Email Address</label>
-      <input type="text">
+      <input type="text" data-role="email">
 
       <label>Phone Number</label>
-      <input type="text">
+      <input type="text" data-role="phone">
 
       <label>Notes</label>
-      <textarea></textarea>
+      <textarea data-role="notes"></textarea>
 
       <button>Save Changes</button>
     </form>

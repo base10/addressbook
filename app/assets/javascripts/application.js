@@ -13,3 +13,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+$(document).ready(function() {
+  $(this).retrieveContacts();
+  $("a[data-role='contact']").click( function() {
+    $(this).showContactInForm(
+      $(this).data("value")
+    );
+  });
+});
