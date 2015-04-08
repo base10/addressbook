@@ -45,7 +45,7 @@ describe "PUT /api/v1/contacts/1" do
     contact_attributes["name"] = "Joe"
     contact_attributes["email"] = "joe@example.com"
 
-    api_put(
+    api_patch(
       path: api_contact_path(id: contact.id),
       data: contact_attributes.except("id", "created_at", "updated_at")
     )

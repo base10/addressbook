@@ -7,8 +7,8 @@ module JsonApiHelpers
     post path, data.to_json, v1_headers
   end
 
-  def api_put(path:, data:)
-    put path, data.to_json, v1_headers
+  def api_patch(path:, data:)
+    patch path, data.to_json, v1_headers
   end
 
   def json_body

@@ -1,7 +1,7 @@
 <header class="top-bar">
   <div class="container">
     <h1>Address Book</h1>
-    <button>Add a Contact</button>
+    <button id="new_contact">Add a Contact</button>
   </div>
 </header>
 
@@ -12,6 +12,8 @@
   <section class="contact-show">
     <h2 data-role="contact-header">Contact</h2>
     <form id="contact_form">
+      <input type="hidden" data-role="id">
+
       <label>Full Name</label>
       <input type="text" data-role="name">
 
@@ -24,7 +26,7 @@
       <label>Notes</label>
       <textarea data-role="notes"></textarea>
 
-      <button>Save Changes</button>
+      <button id="submit">Save Changes</button>
     </form>
   </section>
 </main>

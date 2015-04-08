@@ -23,6 +23,8 @@ class Api::V1::ContactsController < Api::V1::BaseController
     end
   end
 
+  private
+
   def contact_params
     params.require(:contact).permit(permitted_params)
   end
