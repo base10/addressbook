@@ -5,9 +5,10 @@
   var url = "http://localhost:5100/api/contacts";
   var storedContacts = {};
 
-  var erredContacts = function(xhr, status, error) {
-    console.log("retrieveContacts had an error");
-    console.log(error);
+  var erredContacts = function(_xhr, status, error) {
+    console.log("retrieveContacts was unsuccessful");
+    console.log("Status: " + status);
+    console.log("Error:" + error);
   };
 
   var processContacts = function(contacts, status, xhr) {
@@ -15,19 +16,15 @@
 
     for (var i = 0; i < storedContacts.length; i++) {
       $(".contacts").append(
-        $(
-          "<li><a data-role='contact' data-value='" + i + "' href='#'>" +
-          storedContacts[i].name + "</a></li>"
-        );
+        "<li><a data-role='contact' data-value='" + i + "' href='#'>" +
+        storedContacts[i].name + "</a></li>"
       );
     }
   };
 
   var clickContacts = function() {
     $("a[data-role='contact']").click( function() {
-      $(this).showContactInForm(
-        $(this).data("value")
-      );
+      $(this).showContactInForm($(this).data("value"));
     });
   };
 
