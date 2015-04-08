@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       },
       defaults: { format: :json }
     ) do
-      resources :contacts, only: [:index]
+      resources :contacts, only: [:index, :create, :update]
     end
   end
 end

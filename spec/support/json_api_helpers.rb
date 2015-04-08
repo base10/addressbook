@@ -3,6 +3,14 @@ module JsonApiHelpers
     get path, {}, v1_headers
   end
 
+  def api_post(path, data)
+    post path, data.to_json, v1_headers
+  end
+
+  def api_put(path:, data:)
+    put path, data.to_json, v1_headers
+  end
+
   def json_body
     JSON.parse(response.body)
   end
