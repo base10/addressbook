@@ -20,13 +20,14 @@ var erredUpdate = function(_xhr, status, error) {
 
 var processContacts = function(contacts, status, xhr) {
   storedContacts = contacts;
+  $("[data-role='contact']").remove();
 
-  for (var i = 0; i < storedContacts.length; i++) {
+  $(storedContacts).each(function(index) {
     $(".contacts").append(
-      "<li><a data-role='contact' data-value='" + i + "' href='#'>" +
-      storedContacts[i].name + "</a></li>"
+      "<li><a data-role='contact' data-value='" + index + "' href='#'>" +
+      storedContacts[index].name + "</a></li>"
     );
-  }
+  });
 };
 
 var showContactInForm = function(position) {
