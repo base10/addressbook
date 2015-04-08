@@ -14,8 +14,6 @@
 //= require jquery_ujs
 //= require_tree .
 $(document).ready(function() {
-  var retrieveContacts, showContactInForm, updateContact, clearContactForm;
-
   retrieveContacts();
 
   $("a[data-role='contact']").click( function() {
