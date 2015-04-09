@@ -1,7 +1,7 @@
 var accepts = "application/vnd.addressbook_service+json; version=1";
 var async = true;
 var contentType = "application/json";
-var url = "http://localhost:5100/api/contacts";
+var url = "/api/contacts";
 var storedContacts = {};
 
 var hideFeedback = function() {
@@ -33,7 +33,7 @@ var showError = function(method) {
 var showSuccess = function(contact, method) {
   hideFeedback();
   var methodMsg = {
-    "PATCH": "Updated",
+    "PUT": "Updated",
     "POST": "Created"
   };
 
@@ -51,11 +51,12 @@ var erredContacts = function(_xhr, status, error) {
   showError("Retrieving contacts");
 };
 
-var erredUpdate = function(_xhr, status, error) {
+var erredUpdate = function(xhr, status, error) {
   hideFeedback();
   console.log("updateContacts was unsuccessful");
   console.log("Status: " + status);
-  console.log("Error:" + error);
+  console.log("Error:" + JSON.stringify(error));
+  console.log("XHR:" + JSON.stringify(xhr));
   showError("Adding or updating the contact");
 };
 
@@ -116,15 +117,14 @@ var retrieveContacts = function() {
 };
 
 var propertyIsValid = function(contact, property) {
-  var valid = true;
-
   if (!contact[property]) {
     $("[data-role='" + property +  "-error']").show();
     console.log(property + " is invalid");
-    valid = false;
+    return false;
   }
-
-  return valid;
+  else {
+    return true;
+  }
 };
 
 var validateContact = function(contact) {
@@ -145,7 +145,7 @@ var setUpdateMethod = function(id) {
     return "POST";
   }
   else {
-    return "PATCH";
+    return "PUT";
   }
 };
 
@@ -171,6 +171,7 @@ var updateContact = function() {
   if (validateContact(contact)) {
     var id = $("[data-role='id']").val();
 
+    event.preventDefault();
     $.ajax({
       async: async,
       data: JSON.stringify(contact),

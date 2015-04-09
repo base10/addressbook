@@ -2,6 +2,7 @@ ENV["RAILS_ENV"] = "test"
 
 require File.expand_path("../../config/environment", __FILE__)
 
+require "capybara/poltergeist"
 require "rspec/rails"
 require "shoulda/matchers"
 
@@ -20,4 +21,4 @@ RSpec.configure do |config|
 end
 
 ActiveRecord::Migration.maintain_test_schema!
-Capybara.javascript_driver = :webkit
+Capybara.javascript_driver = :poltergeist

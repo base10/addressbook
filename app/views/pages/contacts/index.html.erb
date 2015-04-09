@@ -17,19 +17,19 @@
     <form id="contact_form">
       <input type="hidden" data-role="id">
 
-      <label>Full Name</label>
-      <input type="text" data-role="name">
+      <label for="contact_name">Full Name</label>
+      <input type="text" data-role="name" id="contact_name">
       <div class="error" data-role="name-error">Name is required</div>
 
-      <label>Email Address</label>
-      <input type="text" data-role="email">
+      <label for="contact_email">Email Address</label>
+      <input type="text" data-role="email" id="contact_email">
       <div class="error" data-role="email-error">A valid email address is required</div>
 
-      <label>Phone Number</label>
-      <input type="text" data-role="phone">
+      <label for="contact_phone">Phone Number</label>
+      <input type="text" data-role="phone" id="contact_phone">
 
-      <label>Notes</label>
-      <textarea data-role="notes"></textarea>
+      <label for="contact_notes">Notes</label>
+      <textarea data-role="notes" id="contact_notes"></textarea>
 
       <button id="submit">Save Changes</button>
     </form>
