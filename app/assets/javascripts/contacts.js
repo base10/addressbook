@@ -4,18 +4,58 @@ var contentType = "application/json";
 var url = "http://localhost:5100/api/contacts";
 var storedContacts = {};
 
+var hideFeedback = function() {
+  $("[data-role='feedback']").hide();
+  $("[data-role='feedback']").remove("p");
+  $("[data-role='feedback']").removeClass("flash-success flash-error");
+};
+
+var showFeedback = function(type, message) {
+  hideFeedback();
+
+  var flashClass = {
+    error: "flash-error",
+    success: "flash-success"
+  }
+ 
+  $("[data-role='feedback']").addClass(flashClass[type]);
+  $("[data-role='feedback']").html("<p>" + message + "</p>");
+  $("[data-role='feedback']").show();
+};
+
+var showError = function(method) {
+  showFeedback(
+    "error",
+    "Error: " + method + " was unsuccessful."
+  );
+};
+
+var showSuccess = function(contact, method) {
+  var methodMsg = {
+    "PATCH": "Updated",
+    "POST": "Created"
+  };
+
+  showFeedback(
+    "success",
+    methodMsg[method] + " " + contact.name
+  );
+};
+
 var erredContacts = function(_xhr, status, error) {
-  // FIXME: Display result to the user
+  hideFeedback();
   console.log("retrieveContacts was unsuccessful");
   console.log("Status: " + status);
   console.log("Error:" + error);
+  showError("Retrieving contacts");
 };
 
 var erredUpdate = function(_xhr, status, error) {
-  // FIXME: Display result to the user
+  hideFeedback();
   console.log("updateContacts was unsuccessful");
   console.log("Status: " + status);
   console.log("Error:" + error);
+  showError("Adding or updating the contact");
 };
 
 var processContacts = function(contacts, status, xhr) {
@@ -31,6 +71,8 @@ var processContacts = function(contacts, status, xhr) {
 };
 
 var showContactInForm = function(position) {
+  hideFeedback();
+
   var contact = storedContacts[position];
 
   $("[data-role='contact-header']").html("Contact " + contact.id);
@@ -45,11 +87,6 @@ var clickContacts = function() {
   $("a[data-role='contact']").click( function() {
     showContactInForm($(this).data("value"));
   });
-};
-
-var showSuccess = function() {
-  // FIXME: Display result to the user
-  console.log("Form submission worked!");
 };
 
 var clearContactForm = function() {
@@ -78,6 +115,8 @@ var retrieveContacts = function() {
 };
 
 var updateContact = function() {
+  hideFeedback();
+
   var contact = {
     email: $("[data-role='email']").val(),
     name: $("[data-role='name']").val(),
@@ -104,8 +143,8 @@ var updateContact = function() {
     },
     method: method,
     success: [
-      showSuccess,
-      retrieveContacts,
+      showSuccess(contact, method),
+      retrieveContacts
     ],
     url: updateUrl
   });
