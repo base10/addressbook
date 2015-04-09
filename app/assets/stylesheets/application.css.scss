@@ -66,6 +66,12 @@ main {
   }
 }
 
-.feedback {
+.feedback,
+.error {
   display: none;
+}
+
+.error {
+  background-color: $error-color;
+
 }

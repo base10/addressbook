@@ -27,6 +27,7 @@ $(document).ready(function() {
   });
 
   $("#new_contact").click( function() {
+    hideFeedback();
     clearContactForm();
   });
 });

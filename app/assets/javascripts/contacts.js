@@ -5,14 +5,13 @@ var url = "http://localhost:5100/api/contacts";
 var storedContacts = {};
 
 var hideFeedback = function() {
+  $(".error").hide();
   $("[data-role='feedback']").hide();
   $("[data-role='feedback']").remove("p");
   $("[data-role='feedback']").removeClass("flash-success flash-error");
 };
 
 var showFeedback = function(type, message) {
-  hideFeedback();
-
   var flashClass = {
     error: "flash-error",
     success: "flash-success"
@@ -24,6 +23,7 @@ var showFeedback = function(type, message) {
 };
 
 var showError = function(method) {
+  hideFeedback();
   showFeedback(
     "error",
     "Error: " + method + " was unsuccessful."
@@ -31,6 +31,7 @@ var showError = function(method) {
 };
 
 var showSuccess = function(contact, method) {
+  hideFeedback();
   var methodMsg = {
     "PATCH": "Updated",
     "POST": "Created"
@@ -114,6 +115,49 @@ var retrieveContacts = function() {
   });
 };
 
+var propertyIsValid = function(contact, property) {
+  var valid = true;
+
+  if (!contact[property]) {
+    $("[data-role='" + property +  "-error']").show();
+    console.log(property + " is invalid");
+    valid = false;
+  }
+
+  return valid;
+};
+
+var validateContact = function(contact) {
+  return propertyIsValid(contact, "email") && propertyIsValid(contact, "name");
+};
+
+var isNewRecord = function(id) {
+  if (id > 0) {
+    return false;
+  }
+  else {
+    return true;
+  }
+};
+
+var setUpdateMethod = function(id) {
+  if (isNewRecord(id)) {
+    return "POST";
+  }
+  else {
+    return "PATCH";
+  }
+};
+
+var setUpdateUrl = function(id) {
+  if (isNewRecord(id)) {
+    return url;
+  }
+  else {
+    return url + "/" + id;
+  }
+};
+
 var updateContact = function() {
   hideFeedback();
 
@@ -124,28 +168,23 @@ var updateContact = function() {
     notes: $("[data-role='notes']").val()
   };
 
-  var id = $("[data-role='id']").val();
-  var method = "POST";
-  var updateUrl = url;
+  if (validateContact(contact)) {
+    var id = $("[data-role='id']").val();
 
-  if (id > 0) {
-    method = "PATCH";
-    updateUrl = updateUrl + "/" + id;
+    $.ajax({
+      async: async,
+      data: JSON.stringify(contact),
+      error: erredUpdate,
+      headers: {
+        "Accept": accepts,
+        "Content-Type": contentType,
+      },
+      method: setUpdateMethod(id),
+      success: [
+        showSuccess(contact, setUpdateMethod(id)),
+        retrieveContacts
+      ],
+      url: setUpdateUrl(id)
+    });
   }
-
-  $.ajax({
-    async: async,
-    data: JSON.stringify(contact),
-    error: erredUpdate,
-    headers: {
-      "Accept": accepts,
-      "Content-Type": contentType,
-    },
-    method: method,
-    success: [
-      showSuccess(contact, method),
-      retrieveContacts
-    ],
-    url: updateUrl
-  });
 };
