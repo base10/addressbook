@@ -1,4 +1,8 @@
 module JsonApiHelpers
+  def api_delete(path)
+    delete path, {}, v1_headers
+  end
+
   def api_get(path)
     get path, {}, v1_headers
   end
@@ -7,8 +11,8 @@ module JsonApiHelpers
     post path, data.to_json, v1_headers
   end
 
-  def api_patch(path:, data:)
-    patch path, data.to_json, v1_headers
+  def api_put(path:, data:)
+    put path, data.to_json, v1_headers
   end
 
   def json_body

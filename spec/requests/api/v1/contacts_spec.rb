@@ -45,7 +45,7 @@ describe "PUT /api/v1/contacts/1" do
     contact_attributes["name"] = "Joe"
     contact_attributes["email"] = "joe@example.com"
 
-    api_patch(
+    api_put(
       path: api_contact_path(id: contact.id),
       data: contact_attributes.except("id", "created_at", "updated_at")
     )
@@ -54,5 +54,23 @@ describe "PUT /api/v1/contacts/1" do
     expect(response.status).to eq(200)
     expect(updated_contact.name).to eq(contact_attributes["name"])
     expect(updated_contact.email).to eq(contact_attributes["email"])
+  end
+end
+
+describe "DELETE /api/v1/contacts/1" do
+  it "destroys the contact in the database" do
+    contact = create(:contact)
+
+    api_delete api_contact_path(id: contact.id)
+
+    expect(response.status).to eq(204)
+    expect(Contact.find_by(id: contact.id)).to be_nil
+  end
+
+  context "when the record doesn't exist" do
+    it "returns an error" do
+      api_delete api_contact_path(id: 0)
+      expect(response.status).to eq(404)
+    end
   end
 end

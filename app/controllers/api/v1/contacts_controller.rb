@@ -23,6 +23,17 @@ class Api::V1::ContactsController < Api::V1::BaseController
     end
   end
 
+  def destroy
+    contact = Contact.find_by(id: params[:id])
+
+    if contact
+      contact.destroy
+      render nothing: true, status: 204
+    else
+      render json: { error: "Not found" }, status: 404
+    end
+  end
+
   private
 
   def contact_params
