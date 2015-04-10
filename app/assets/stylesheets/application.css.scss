@@ -66,6 +66,7 @@ main {
   }
 }
 
+.contact-form,
 .feedback,
 .error {
   display: none;
@@ -73,5 +74,4 @@ main {
 
 .error {
   background-color: $error-color;
-
 }

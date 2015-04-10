@@ -18,6 +18,7 @@
 
     "jasmine",
     "beforeEach",
+    "confirm",
     "console",
     "describe",
     "expect",

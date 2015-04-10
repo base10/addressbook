@@ -14,6 +14,7 @@ var hideFeedback = function() {
 var showFeedback = function(type, message) {
   var flashClass = {
     error: "flash-error",
+    notice: "flash-notice",
     success: "flash-success"
   }
  
@@ -34,7 +35,8 @@ var showSuccess = function(contact, method) {
   hideFeedback();
   var methodMsg = {
     "PUT": "Updated",
-    "POST": "Created"
+    "POST": "Created",
+    "DELETE": "Deleted"
   };
 
   showFeedback(
@@ -43,27 +45,38 @@ var showSuccess = function(contact, method) {
   );
 };
 
-var erredContacts = function(_xhr, status, error) {
+var recordAndDisplayError = function(xhr, status, error, message) {
   hideFeedback();
-  console.log("retrieveContacts was unsuccessful");
-  console.log("Status: " + status);
-  console.log("Error:" + error);
-  showError("Retrieving contacts");
-};
-
-var erredUpdate = function(xhr, status, error) {
-  hideFeedback();
-  console.log("updateContacts was unsuccessful");
+  console.log(message + " was unsuccessful");
   console.log("Status: " + status);
   console.log("Error:" + JSON.stringify(error));
   console.log("XHR:" + JSON.stringify(xhr));
-  showError("Adding or updating the contact");
+  showError(message);
 };
 
-var processContacts = function(contacts, status, xhr) {
-  storedContacts = contacts;
-  $("[data-role='contact']").remove();
+var erredContacts = function(xhr, status, error) {
+  recordAndDisplayError(xhr, status, error, "Retrieving contacts");
+};
 
+var erredContactDelete = function(xhr, status, error) {
+  recordAndDisplayError(xhr, status, error, "Deleting the contact");
+};
+
+var erredUpdate = function(xhr, status, error) {
+  recordAndDisplayError(xhr, status, error, "Adding or updating the contact");
+};
+
+
+var anyContacts = function() {
+  if (storedContacts.length > 0) {
+    return true;
+  }
+  else {
+    return false;
+  }
+};
+
+var showContactList = function() {
   $(storedContacts).each(function(index) {
     $(".contacts").append(
       "<li><a data-role='contact' data-value='" + index + "' href='#'>" +
@@ -72,8 +85,90 @@ var processContacts = function(contacts, status, xhr) {
   });
 };
 
-var showContactInForm = function(position) {
+var showEmptyContactList = function() {
+  $(".contacts").append(
+    "<li data-role='contact'>No contacts yet</li>"
+  );
+};
+
+var displayContacts = function() {
+  if (anyContacts()) {
+    showContactList();
+  }
+  else {
+    showEmptyContactList();
+  }
+};
+
+var setStoredContacts = function(contacts) {
+  storedContacts = contacts;
+};
+
+var processContacts = function(contacts) {
+  setStoredContacts(contacts);
+  $("[data-role='contact']").remove();
+  displayContacts();
+};
+
+var showContactView = function() {
   hideFeedback();
+  $("[data-role='contact-form']").hide();
+  $("[data-role='contact-view']").show();
+};
+
+var showContactForm = function() {
+  hideFeedback();
+  $("[data-role='contact-view']").hide();
+  $("[data-role='contact-form']").show();
+};
+
+var determineContactUrl = function(id) {
+  if (isNewRecord(id)) {
+    return url;
+  }
+  else {
+    return url + "/" + id;
+  }
+};
+
+var deleteContactAjaxAction = function(contact) {
+  var method = "DELETE";
+
+  $.ajax({
+    async: async,
+    contentType: contentType,
+    dataType: "json",
+    error: erredContactDelete,
+    headers: {
+      "Accept": accepts,
+      "Content-Type": contentType,
+    },
+    method: method,
+    success: [
+      retrieveContacts,
+      showSuccess(contact, method)
+    ],
+    url: determineContactUrl(contact.id),
+  });
+};
+
+var deleteContact = function(position) {
+  var contact = storedContacts[position];
+  var confirmation = confirm("Verify you want to delete " + contact.name);
+
+  if (confirmation) {
+    deleteContactAjaxAction(contact);
+  }
+  else {
+    showFeedback(
+      "notice",
+      "Delete cancelled"
+    );
+  }
+};
+
+var showContactInForm = function(position) {
+  showContactForm();
 
   var contact = storedContacts[position];
 
@@ -85,16 +180,41 @@ var showContactInForm = function(position) {
   $("[data-role='notes']").val(contact.notes);
 };
 
+var resetButtons = function(position) {
+  $("#edit-contact").unbind("click");
+  $("#delete-contact").unbind("click");
+
+  $("#edit-contact").click( function() {
+    showContactInForm(position);
+  });
+
+  $("#delete-contact").click( function() {
+    deleteContact(position);
+  });
+};
+
+var showContact = function(position) {
+  showContactView();
+  var contact = storedContacts[position];
+
+  $("[data-role='view-email']").html(contact.email);
+  $("[data-role='view-phone']").html(contact.phone);
+  $("[data-role='view-name']").html(contact.name);
+  $("[data-role='view-notes']").html(contact.notes);
+
+  resetButtons(position);
+};
+
 var clickContacts = function() {
   $("a[data-role='contact']").click( function() {
-    showContactInForm($(this).data("value"));
+    showContact($(this).data("value"));
   });
 };
 
 var clearContactForm = function() {
   $("[data-role='contact-header']").html("Contact");
   $("[data-role='id']").val("");
-  $("#contact_form").trigger("reset");
+  $("[data-role='contact-form']").trigger("reset");
 };
 
 var retrieveContacts = function() {
@@ -149,15 +269,6 @@ var setUpdateMethod = function(id) {
   }
 };
 
-var setUpdateUrl = function(id) {
-  if (isNewRecord(id)) {
-    return url;
-  }
-  else {
-    return url + "/" + id;
-  }
-};
-
 var updateContact = function() {
   hideFeedback();
 
@@ -185,7 +296,7 @@ var updateContact = function() {
         showSuccess(contact, setUpdateMethod(id)),
         retrieveContacts
       ],
-      url: setUpdateUrl(id)
+      url: determineContactUrl(id)
     });
   }
 };

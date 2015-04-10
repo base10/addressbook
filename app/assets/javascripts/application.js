@@ -28,6 +28,7 @@ $(document).ready(function() {
 
   $("#new_contact").click( function() {
     hideFeedback();
+    showContactForm();
     clearContactForm();
   });
 });

@@ -14,7 +14,20 @@
 
     <section class="feedback" data-role="feedback"></section>
 
-    <form id="contact_form">
+    <section data-role="contact-view">
+      <h3 data-role="view-name"></h2>
+
+      <ul>
+        <li data-role="view-email"></li>
+        <li data-role="view-phone"></li>
+        <li data-role="view-notes"></li>
+      </ul>
+
+      <button id="edit-contact">Edit</button>
+      <button id="delete-contact">Delete</button>
+    </section>
+
+    <form data-role="contact-form" class="contact-form">
       <input type="hidden" data-role="id">
 
       <label for="contact_name">Full Name</label>
