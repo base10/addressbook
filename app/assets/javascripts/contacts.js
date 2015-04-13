@@ -68,12 +68,7 @@ var erredUpdate = function(xhr, status, error) {
 
 
 var anyContacts = function() {
-  if (storedContacts.length > 0) {
-    return true;
-  }
-  else {
-    return false;
-  }
+  return storedContacts.length > 0;
 };
 
 var showContactList = function() {
