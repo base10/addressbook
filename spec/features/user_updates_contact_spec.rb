@@ -7,16 +7,11 @@ feature "User updates contact" do
 
     click_on "Ralph P. Bot"
     click_button "Edit"
-
     fill_in "Full Name", with: "Ralph"
     click_button "Save Changes"
 
     expect(page).to have_message("Updated Ralph")
     expect(page).to have_contact("Ralph")
     expect(page).not_to have_contact("Ralph P. Bot")
-
-    expect(page).to have_button("Edit")
-    expect(page).to have_button("Delete")
-    expect(page).not_to have_button("Save Changes")
   end
 end
