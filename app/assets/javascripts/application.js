@@ -14,21 +14,23 @@
 //= require jquery_ujs
 //= require_tree .
 $(document).ready(function() {
-  retrieveContacts();
+  var contact = new Contact();
+
+  contact.retrieveContacts();
 
   $("a[data-role='contact']").click( function() {
-    showContactInForm(
+    contact.showContactInForm(
       $(this).data("value")
     );
   });
 
   $("#submit").click( function() {
-    updateContact();
+    contact.updateContact();
   });
 
   $("#new_contact").click( function() {
-    hideFeedback();
-    showContactForm();
-    clearContactForm();
+    contact.hideFeedback();
+    contact.showContactForm();
+    contact.clearContactForm();
   });
 });
