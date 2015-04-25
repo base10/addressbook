@@ -91,7 +91,9 @@ function Contact() {
     );
   };
 
-  this.displayContacts = function() {
+  this.fooContacts = function() {
+    alert("hellp");
+
     if (this.anyContacts()) {
       this.showContactList();
     }
@@ -100,14 +102,11 @@ function Contact() {
     }
   };
 
-  this.setStoredContacts = function(contacts) {
-    this.storedContacts = contacts;
-  };
-
   this.processContacts = function(contacts) {
-    this.setStoredContacts(contacts);
+    this.storedContacts = contacts;
     $("[data-role='contact']").remove();
-    this.displayContacts();
+    this.fooContacts();
+    alert("goodbye");
   };
 
   this.showContactView = function() {

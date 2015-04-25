@@ -16,7 +16,11 @@
 $(document).ready(function() {
   var contact = new Contact();
 
+  console.log("in doc ready");
+
   contact.retrieveContacts();
+
+  console.log("called retrieveContacts");
 
   $("a[data-role='contact']").click( function() {
     contact.showContactInForm(
