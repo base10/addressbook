@@ -14,13 +14,9 @@
 //= require jquery_ujs
 //= require_tree .
 $(document).ready(function() {
-  var contact = new Contact();
-
-  console.log("in doc ready");
+  var contact = new ContactHandler();
 
   contact.retrieveContacts();
-
-  console.log("called retrieveContacts");
 
   $("a[data-role='contact']").click( function() {
     contact.showContactInForm(
